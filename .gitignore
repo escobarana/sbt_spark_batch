@@ -7,6 +7,15 @@
 target
 project/metals.sbt
 project/project
+
+.dccache
+.history
+/bin/
+/node_modules/
+/.idea/
+/.vscode/
+/.history/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

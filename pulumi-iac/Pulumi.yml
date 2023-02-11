@@ -1,0 +1,3 @@
+name: emr-serverless
+description: Batch job running on EMR serverless
+runtime: nodejs
