@@ -1,0 +1,48 @@
+name: Release and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AWS_REGION: us-west-2
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Build with SBT
+      uses: actions/setup-scala@v1
+      with:
+        scala-version: 2.12.x
+      env:
+        SBT_OPTS: "-Xms2g -Xmx2g"
+      run: |
+        echo "SBT Version"
+        sbt sbtVersion
+
+        echo "Building Project"
+        sbt clean compile assembly
+
+    - name: Upload JAR to AWS S3
+      uses: aws-actions/upload-to-s3@v1
+      with:
+        args: build/libs/[PROJECT_NAME]-[PROJECT_VERSION].jar
+        bucket-name: [BUCKET_NAME]
+        region: ${{ env.AWS_REGION }}
+
+    - name: Start AWS Serverless EMR Batch Job
+      uses: aws-actions/amazon-emr-actions@v1
+      with:
+        args: add-steps --cluster-id [CLUSTER_ID] --steps Type=Spark,Name=[JOB_NAME],ActionOnFailure=CONTINUE,Args=[--deploy-mode,cluster,--class,[MAIN_CLASS],s3://[BUCKET_NAME]/[PROJECT_NAME]-[PROJECT_VERSION].jar,[INPUT_ARGS]]
+        region: ${{ env.AWS_REGION }}
