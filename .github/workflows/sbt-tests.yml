@@ -19,7 +19,7 @@ jobs:
           java-version: 11
 
       - name: Build with SBT
-        # uses: actions/setup-scala@v1
+        uses: actions/setup-scala@v1
         with:
           scala-version: 2.12.x
         env:
