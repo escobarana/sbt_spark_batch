@@ -10,23 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Java
+      - name: Setup JDK
         uses: actions/setup-java@v1
         with:
           java-version: 11
 
-      - name: Build with SBT
-        uses: actions/setup-scala@v1
-        with:
-          scala-version: 2.12.x
-        env:
-          SBT_OPTS: "-Xms2g -Xmx2g"
-        run: |
-          echo "SBT Version"
-          sbt sbtVersion
-          
-          echo "Building Project"
-          sbt clean compile assembly
+      - name: Build and Test with SBT
+        run: sbt -v +test
