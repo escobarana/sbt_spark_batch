@@ -6,6 +6,9 @@ on:
   push:
     branches:
       - develop
+defaults:
+  run:
+    working-directory: pulumi-iac
 jobs:
   preview:
     name: Preview
