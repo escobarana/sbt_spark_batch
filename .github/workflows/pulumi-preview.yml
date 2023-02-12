@@ -1,4 +1,4 @@
-name: Pulumi CICD
+name: Pulumi Preview
 on:
   pull_request:
     branches:

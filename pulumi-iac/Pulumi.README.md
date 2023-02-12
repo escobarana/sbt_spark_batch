@@ -19,7 +19,7 @@ Script location / S3 URI: s3://${outputs.scriptBucket}/${outputs.scriptKey}
 
 Main class: App
 
-Script arguments: ["s3://${outputs.dataBucket}/in/${outputs.dataKey}", "s3://${outputs.dataBucket}/out/csv"]
+Script arguments: ["s3://${outputs.dataBucket}/${outputs.dataKey}", "s3://${outputs.dataBucket}/out/csv"]
 
 Spark Properties
 * spark.driver.cores = 1
