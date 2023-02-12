@@ -154,6 +154,7 @@ You can find more information about how to install it at https://www.pulumi.com/
 
 ```bash
 cd pulumi-iac
+npm install
 pulumi login
 pulumi preview
 pulumi up
