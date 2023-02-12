@@ -36,6 +36,7 @@ jobs:
         uses: pulumi/actions@v3
         with:
           command: preview
-          stack-name: escobarana/emr-serverless/dev # When using an individual account, only use stack-name.
+          stack-name: dev # When using an individual account, only use stack-name.
+          work-dir: pulumi-iac
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
