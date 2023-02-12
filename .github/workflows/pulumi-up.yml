@@ -3,9 +3,7 @@ on:
   push:
     branches:
       - main
-defaults:
-  run:
-    working-directory: pulumi-iac
+
 jobs:
   update:
     name: Update
@@ -17,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3.5.1
         with:
-          node-version-file: package.json
+          node-version-file: pulumi-iac/package.json
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
