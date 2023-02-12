@@ -12,43 +12,44 @@ const s3DataBucket = new aws.s3.Bucket(`data-${stack}`, {
     forceDestroy: true
 })
 
-const simpleJobDownload = "https://github.com/escobarana/sbt_spark_batch/releases/download/"
-const simpleJobVersion = "1.0.0"
+const sparkJobDownload = "https://github.com/escobarana/sbt_spark_batch/releases/download/"
+const sparkJobVersion = "1.0.0"
 
-const jarUrl = `${simpleJobDownload}/${simpleJobVersion}/sample-job-assembly-1.0.jar`
+const jarUrl = `${sparkJobDownload}/${sparkJobVersion}/spark-job-assembly-1.0.jar`
 
-const jarKey = "jobs/sample-job/sample-job-assembly-1.0.jar" 
-const jarFile = new aws.s3.BucketObject("sample-job-assembly-1.0.jar", {
+const jarKey = "jobs/spark-job/spark-job-assembly-1.0.jar"
+const jarFile = new aws.s3.BucketObject("spark-job-assembly-1.0.jar", {
     key: jarKey,
     bucket: s3DeployBucket.id,
     source: new pulumi.asset.RemoteAsset(jarUrl),
     //kmsKeyId: examplekms.arn,
 });
 
-const csvUrl = `${simpleJobDownload}/${simpleJobVersion}/sample.csv`
+const csvUrl = `${sparkJobDownload}/${sparkJobVersion}/eCO2mix_RTE_Annuel-Definitif_2020.csv`
 
-const csvKey = "in/sample.csv" 
-const csvFile = new aws.s3.BucketObject("sample.csv", {
+const csvKey = "in/eCO2mixeCO2mix.csv"
+const csvFile = new aws.s3.BucketObject("eCO2mix_RTE_Annuel-Definitif_2020.csv", {
     key: csvKey,
     bucket: s3DataBucket.id,
     source: new pulumi.asset.RemoteAsset(csvUrl),
     //kmsKeyId: examplekms.arn,
 });
 
-/*const s3StudioBucket = new aws.s3.Bucket("studio", {
-    forceDestroy: true
-})*/
 
-/*const example = new aws.emr.Studio("emr-studio", {
-    authMode: "IAM",
-    defaultS3Location: `s3://${s3StudioBucket.bucket}/test`,
-    engineSecurityGroupId: null, //aws_security_group.test.id,
-    //serviceRole: aws_iam_role.test.arn,
-    //subnetIds: [aws_subnet.test.id],
-    //userRole: aws_iam_role.test.arn,
-    //vpcId: aws_vpc.test.id,
-   // workspaceSecurityGroupId: aws_security_group.test.id,
-});*/
+// const s3StudioBucket = new aws.s3.Bucket("studio", {
+//     forceDestroy: true
+// })
+//
+// const example = new aws.emr.Studio("emr-studio", {
+//     authMode: "IAM",
+//     defaultS3Location: `s3://${s3StudioBucket.bucket}/test`,
+//     engineSecurityGroupId: null //aws_security_group.test.id,
+//     //serviceRole: aws_iam_role.test.arn,
+//     //subnetIds: [aws_subnet.test.id],
+//     //userRole: aws_iam_role.test.arn,
+//     //vpcId: aws_vpc.test.id,
+//    // workspaceSecurityGroupId: aws_security_group.test.id,
+// });
 
 
 const batchProcessingApp = new aws.emrserverless.Application(`batch-processing-${stack}`, {
@@ -128,16 +129,17 @@ const emrRole = new aws.iam.Role(`emrRole-${stack}`, {
     },
 });
 
+export const aws_region = "eu-west-1"
 export const readme = readFileSync("./Pulumi.README.md").toString();
 
 export const outputDeployBucket = s3DeployBucket.id
 export const outputDataBucket = s3DataBucket.id
 
-export const deployS3Console = outputDeployBucket.apply(id =>`https://us-east-1.console.aws.amazon.com/s3/buckets/${id}?region=eu-west-3&tab=objects`)
-export const dataS3Console = outputDataBucket.apply(id => `https://us-east-1.console.aws.amazon.com/s3/buckets/${id}?region=eu-west-3&tab=objects`)
+export const deployS3Console = outputDeployBucket.apply(id =>`https://us-east-1.console.aws.amazon.com/s3/buckets/${id}?region=${aws_region}&tab=objects`)
+export const dataS3Console = outputDataBucket.apply(id => `https://us-east-1.console.aws.amazon.com/s3/buckets/${id}?region=${aws_region}&tab=objects`)
 
-const emrstudioAppId = "to_be_defined"
-export const appUrl = batchProcessingApp.id.apply(id => `https://${emrstudioAppId}.emrstudio-prod.eu-west-3.amazonaws.com/#/serverless-applications/${id}`)
+const emrstudioAppId = "es-dsde69iu5wht4f0uoddvrn0fr"
+export const appUrl = batchProcessingApp.id.apply(id => `https://${emrstudioAppId}.emrstudio-prod.${aws_region}.amazonaws.com/#/serverless-applications/${id}`)
 
 export const scriptKey = jarFile.key
 export const scriptBucket = jarFile.bucket
