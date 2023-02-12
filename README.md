@@ -1,5 +1,5 @@
-# Batch processing in Spark using SBT tool
-Batch Spark job of CO2_emission data using SBT tool.
+# Batch processing in Spark using SBT tool and AWS EMR
+Batch Spark job of CO2 Emission data using SBT tool.
 
 According to Wikipedia : “Réseau de Transport d'Électricité ("Electricity Transmission Network"), usually known as RTE, is the electricity transmission system operator of France.”
 
@@ -14,4 +14,4 @@ According to https://www.rte-france.com/en/eco2mix/co2-emissions, the contributi
 
 
 ## Input
-The electricity production data for 2020 is published at https://eco2mix.rte-france.com/download/eco2mix/eCO2mix_RTE_Annuel-Definitif_2020.zip
+The electricity production data for 2020 published at https://eco2mix.rte-france.com/download/eco2mix/eCO2mix_RTE_Annuel-Definitif_2020.zip
