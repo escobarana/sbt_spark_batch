@@ -31,6 +31,7 @@ jobs:
 
       - name: Install node packages
         run: npm install
+        working-directory: pulumi-iac
 
       - name: Pulumi Preview
         uses: pulumi/actions@v3
