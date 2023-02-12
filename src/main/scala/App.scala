@@ -6,7 +6,7 @@ import org.apache.spark.sql.Dataset
 object App {
   val log = Logger.getLogger(App.getClass().getName())
 
-  def run(in: String, out: String = null) = {
+  def run(in: String, outFolder: String) = {
     log.info("Starting App")
     val spark = createSession
 
@@ -16,9 +16,9 @@ object App {
       .option("encoding", "ISO-8859-1")
       .csv(in)
 
-    compute_CO2_emissions(df, "data/CO2_emission.csv")
-    CO2_emission_report1(df, "data/CO2_emission_report1.csv")
-    CO2_emission_report2(df, "data/CO2_emission_report2.csv")
+    compute_CO2_emissions(df, s"${outFolder}/CO2_emission.csv")
+    CO2_emission_report1(df, s"${outFolder}/CO2_emission_report1.csv")
+    CO2_emission_report2(df, s"${outFolder}/CO2_emission_report2.csv")
 
     createSession.close
     log.info("Stopping App") 
@@ -144,7 +144,7 @@ object App {
   }
 
   def main(args: Array[String]) = args match {
-    case Array(in) => run(in)
-    case _              => println("usage: spark-submit --class App target/scala-2.12/spark-job-assembly-1.0.jar data/eCO2mix_RTE_Annuel-Definitif_2020.csv")
+    case Array(in, outFolder) => run(in, outFolder)
+    case _              => println("usage: spark-submit --class App target/scala-2.12/spark-job-assembly-1.0.jar data/eCO2mix_RTE_Annuel-Definitif_2020.csv data")
   }
 }
